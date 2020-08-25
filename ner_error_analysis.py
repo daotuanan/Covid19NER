@@ -84,12 +84,16 @@ def print_combine_file(true_file,predict_file,output_file):
     else:
         for i in range(len(word_true)):
             for j in range(len(word_true[i])):
-                if (word_true[i][j]!=word_pred[i][j]):
-                    print('Errors! Labels and predicts are different at !',i,file=fout)
-                    print('Errors! Labels and predicts are different at !',i,)
+                if (len(word_true[i])!=len(word_pred[i])):
+                    print('Errors! Labels and predicts have different length!',file=fout)
+                    print('Errors! Labels and predicts have different length!')
                 else:
-                    print(word_true[i][j]+' '+y_true[i][j]+' '+y_pred[i][j]+' '+str(y_true[i][j]==y_pred[i][j]),file=fout)
-            print('',file=fout)
+                    if (word_true[i][j]!=word_pred[i][j]):
+                        print('Errors! Labels and predicts are different at !',i,file=fout)
+                        print('Errors! Labels and predicts are different at !',i,)
+                    else:
+                        print(word_true[i][j]+' '+y_true[i][j]+' '+y_pred[i][j]+' '+str(y_true[i][j]==y_pred[i][j]),file=fout)
+                print('',file=fout)
 
 def readLabel(label_file):
     label_list = open(label_file,'r',encoding='utf-8').read().split('\n')
