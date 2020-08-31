@@ -85,8 +85,8 @@ def print_combine_file(true_file,predict_file,output_file):
         for i in range(len(word_true)):
             for j in range(len(word_true[i])):
                 if (len(word_true[i])!=len(word_pred[i])):
-                    print('Errors! Labels and predicts have different length!',file=fout)
-                    print('Errors! Labels and predicts have different length!')
+                    print('Errors! Sents have different length!',file=fout)
+                    print('Errors! Sents have different length!')
                 else:
                     if (word_true[i][j]!=word_pred[i][j]):
                         print('Errors! Labels and predicts are different at !',i,file=fout)
