@@ -24,8 +24,9 @@ Output:
 import argparse
 from seqeval.metrics import classification_report
 import pandas as pd
+import re
 # Import parkages
-from ner_evaluation.ner_eval import Evaluator, collect_named_entities
+#from ner_evaluation.ner_eval import Evaluator, collect_named_entities
 from nervaluate import Evaluator
 # Constants
 
@@ -65,6 +66,9 @@ def print_report(label_list,true_file,predict_file,output_file):
     fout = open(output_file,'w',encoding='utf-8')
     _ , y_true = read_ner_file(true_file)
     _ , y_pred = read_ner_file(predict_file)
+    # print(y_true[0:3])
+    # print(y_pred[0:3])
+    print('List of label: ',label_list,file=fout)
     print('=========== Classification Report ===========',file=fout)
     print(classification_report(y_true,y_pred,digits=4),file=fout)
     evaluator = Evaluator(y_true, y_pred, tags=label_list, loader="list")
@@ -85,8 +89,8 @@ def print_combine_file(true_file,predict_file,output_file):
         for i in range(len(word_true)):
             for j in range(len(word_true[i])):
                 if (len(word_true[i])!=len(word_pred[i])):
-                    print('Errors! Labels and predicts have different length!',file=fout)
-                    print('Errors! Labels and predicts have different length!')
+                    print('Errors! Sents have different length!',file=fout)
+                    print('Errors! Sents have different length!')
                 else:
                     if (word_true[i][j]!=word_pred[i][j]):
                         print('Errors! Labels and predicts are different at !',i,file=fout)
@@ -96,8 +100,13 @@ def print_combine_file(true_file,predict_file,output_file):
                 print('',file=fout)
 
 def readLabel(label_file):
-    label_list = open(label_file,'r',encoding='utf-8').read().split('\n')
-    label_list = [label.strip() for label in label_list]
+    tmp_list = open(label_file,'r',encoding='utf-8').read().split('\n')
+    tmp_list = [label.strip() for label in tmp_list]
+    label_list = []
+    for label in tmp_list:
+        if label != '':
+            tmp = re.sub('[BLIOU]\-','',label)
+            label_list.append(tmp)
     return label_list
 
 

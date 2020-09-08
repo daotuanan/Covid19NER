@@ -24,31 +24,41 @@ def calculateRatio(train_ratio):
 def writeFile(input_file,data):
     with open(input_file,'w',encoding='utf-8') as fout:
         for d in data:
-            fout.write(d+'\n')
+            fout.write(d+'\n\n')
 
 def splitData(input_file,train_ratio,dev_ratio,test_ratio):
     text = open(input_file,'r',encoding='utf-8').read()
     sents = text.split('\n\n')
     train,dev_test = train_test_split(sents,test_size=(dev_ratio+test_ratio))
-    dev,test = train_test_split(dev_test,test_size=test_ratio)
+    dev,test = train_test_split(dev_test,test_size=0.5)
     writeFile('train.txt',train)
     writeFile('dev.txt',dev)
     writeFile('test.txt',test)
+
+def splitTrainData(input_file,output,train_ratio):
+    text = open(input_file,'r',encoding='utf-8').read()
+    sents = text.split('\n\n')
+    train,dev_test = train_test_split(sents,test_size=(1.0-train_ratio))
+    writeFile(output,train)
+
 
 
 def main():
     parser = argparse.ArgumentParser(description='Split CoNLL NER format file into train dev test')
     parser.add_argument('--ratio',type=float, metavar='', required=False, help='Ratio of train in data (default = 0.8)')
     parser.add_argument('--input',type=str, metavar='', required=True, help='Path to the input file')
-
+    parser.add_argument('--output',type=str, metavar='', required=True, help='Path to the output file')
     # parse args
     args = parser.parse_args()
     if args.ratio is not None:
         train_ratio = args.ratio
+    else:
+        train_ratio = 0.8
     input_file = args.input
+    output = args.output
 
     dev_ratio, test_ratio = calculateRatio(train_ratio)
-    splitData(input_file,train_ratio,dev_ratio,test_ratio)
+    splitTrainData(input_file,output,train_ratio)
 
 
 if __name__ == '__main__':
