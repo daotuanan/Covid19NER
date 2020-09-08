@@ -26,7 +26,7 @@ from seqeval.metrics import classification_report
 import pandas as pd
 import re
 # Import parkages
-#from ner_evaluation.ner_eval import Evaluator, collect_named_entities
+# from ner_evaluation.ner_eval import Evaluator, collect_named_entities
 from nervaluate import Evaluator
 # Constants
 
