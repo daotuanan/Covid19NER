@@ -24,6 +24,7 @@ Output:
 import argparse
 from seqeval.metrics import classification_report
 import pandas as pd
+import re
 # Import parkages
 # from ner_evaluation.ner_eval import Evaluator, collect_named_entities
 from nervaluate import Evaluator
@@ -96,8 +97,13 @@ def print_combine_file(true_file,predict_file,output_file):
                 print('',file=fout)
 
 def readLabel(label_file):
-    label_list = open(label_file,'r',encoding='utf-8').read().split('\n')
-    label_list = [label.strip() for label in label_list]
+    tmp_list = open(label_file,'r',encoding='utf-8').read().split('\n')
+    tmp_list = [label.strip() for label in tmp_list]
+    label_list = []
+    for label in tmp_list:
+        if label != '':
+            tmp = re.sub('[BLIOU]\-','',label)
+            label_list.append(tmp)
     return label_list
 
 
