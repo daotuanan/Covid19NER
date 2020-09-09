@@ -13,17 +13,22 @@
 import argparse
 import json
 import re
-
+import multiprocessing as mp
+import os
+import functools
 # Import modules
 
 # Constants
+label_list = readLabel(labels_file)
+    zero_dict = dict()
+    for label in label_list:
+        zero_dict[label] = set()
 
 # Functions
-def update_count_dict(dict_a,dict_b):
-    res = {}
+def update_count_dict(dict_b,dict_a=zero_dict):
     for k in dict_a.keys():
-        res[k] = dict_a[k] | dict_b[k]
-    return res
+        dict_a[k] = dict_a[k] | dict_b[k]
+    return dict_a[k]
 
 def process_sent(sent,count_dict):
     entities = sent['entities']
@@ -33,13 +38,25 @@ def process_sent(sent,count_dict):
         count_dict[ent_type].add(text)
     return count_dict
 
-def process_doc(n,count_dict):
-    tmp_dict = count_dict
+def join_count_dict(ents):
+    if len(ents) = 1:
+        return ents
+    else:
+        pool = mp.Pool()
+        args = [ents[n:n+1] for n in range(0, len(ents), 1)]
+        res = pool.starmap(update_count_dict,arg)
+        print(len(res))
+        return res
+
+
+def process_doc(n):
+    tmp_dict = zero_dict
     doc_sents = n['sents']
+    sent_ents = []
     for sent in doc_sents:
         sent_ent = process_sent(sent,tmp_dict)
-        count_dict = update_count_dict(sent_ent,count_dict)
-    
+        sent_ents.append(sent_ent)
+    count_dict = join_count_dict(sent_ents)
     return count_dict
 
 def print_report_file(input_file, count_dict):
@@ -59,23 +76,19 @@ def print_dict(folder,count_dict):
         fout.close()
 
 def process(json_file,labels_file,report_folder):
-    label_list = readLabel(labels_file)
-    count_dict = dict()
-    for label in label_list:
-        count_dict[label] = set()
-    
-    print(count_dict)
     tmp_dict = count_dict
     i = 0
+    doc_ents= []
     with open(json_file,'r',encoding='utf-8') as ner:
         for ner_line in ner:
             i = i + 1
             n = json.loads(ner_line)
-            doc_ent = process_doc(n,tmp_dict)
-            count_dict = update_count_dict(doc_ent,count_dict)
-            if (i%100)==0: 
+            doc_ent = process_doc(n)
+            doc_ents.append(doc_ent)
+            if (i%10)==0: 
                 print('Processed {} lines'.format(i))
 
+    count_dict = join_count_dict(doc_ents)
     print_report_file(report_folder+'report.out',count_dict)
     print_dict(report_folder,count_dict)
 
