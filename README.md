@@ -15,7 +15,10 @@ import en_model0
 nlp = en_model0.load()
 text = 'The Tokyo Metropolitan Government confirmed 218 new cases of coronavirus infection as of 3 p.m. on Saturday.'
 doc = nlp(text)
+```
 
+## Use model to extract CORONAVIRUS entities:
+```
 #print entities
 for ent in doc.ents:
     print(ent.text, ent.start_char, ent.end_char, ent.label_)
