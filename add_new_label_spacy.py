@@ -7,6 +7,7 @@
     new spacy model 
 '''
 # Import Libs
+import scispacy
 import spacy
 import argparse
 import re
