@@ -2,6 +2,7 @@
 My research on Named Entity Recognition on CORD-19 dataset
 
 Spacy NER model for CoVID-19 entities: [download](https://drive.google.com/file/d/1xokPqcHkFbzAAgJlog_wYch4bMVevsQZ/view?usp=sharing)
+
 Scispacy NER model for CoVID-19 entities: [download](https://drive.google.com/file/d/1I1ok6Xvx0gmmrRaZWHPYBnOBk59vlJ7G/view?usp=sharing)
 ## Installation
 ```
