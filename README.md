@@ -6,6 +6,7 @@ Spacy NER model for CoVID-19 entities: [download](https://drive.google.com/file/
 Scispacy NER model for CoVID-19 entities: [download](https://drive.google.com/file/d/1I1ok6Xvx0gmmrRaZWHPYBnOBk59vlJ7G/view?usp=sharing)
 ## Installation
 ```
+pip install model_name
 pip install en_model0-0.0.0.tar.gz
 ```
 Model will be installed into pip and can be loaded as 'en_model0'
