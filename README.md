@@ -39,4 +39,5 @@ coronavirus 61 72 CORONAVIRUS
 Saturday 99 107 DATE
 
 # References
-
+## Dataset:
+CORD_NER: Wang, Xuan, Xiangchen Song, Yingjun Guan, Bangzheng Li, and Jiawei Han. "Comprehensive named entity recognition on cord-19 with distant or weak supervision." arXiv preprint arXiv:2003.12218 (2020). https://xuanwang91.github.io/2020-03-20-cord19-ner/
