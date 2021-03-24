@@ -19,11 +19,12 @@ import re
 # Constants
 
 # Functions
-def update_count_dict(dict_a,dict_b):
-    res = {}
+def update_count_dict(dict_b,dict_a):
     for k in dict_a.keys():
-        res[k] = dict_a[k] | dict_b[k]
-    return res
+        dict_a[k] = dict_a[k] | dict_b[k]
+        #for element in dict_b[k]:
+        #    dict_a[k].add(element)
+    return dict_a
 
 def process_sent(sent,count_dict):
     entities = sent['entities']
@@ -37,9 +38,12 @@ def process_doc(n,count_dict):
     tmp_dict = count_dict
     doc_sents = n['sents']
     for sent in doc_sents:
+        # print('Update sent')
         sent_ent = process_sent(sent,tmp_dict)
+        # print('Update sent: Done!')
         count_dict = update_count_dict(sent_ent,count_dict)
-    
+        # print('Update count dict: Done!')
+
     return count_dict
 
 def print_report_file(input_file, count_dict):
@@ -73,7 +77,7 @@ def process(json_file,labels_file,report_folder):
             n = json.loads(ner_line)
             doc_ent = process_doc(n,tmp_dict)
             count_dict = update_count_dict(doc_ent,count_dict)
-            if (i%100)==0: 
+            if (i%10)==0: 
                 print('Processed {} lines'.format(i))
 
     print_report_file(report_folder+'report.out',count_dict)
