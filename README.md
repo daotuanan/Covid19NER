@@ -9,7 +9,6 @@ Note: Spacy model is based on Spacy version 2.3
 ## Installation
 ```
 pip install spacy==2.3.7
-pip install model_name
 pip install en_model0-0.0.0.tar.gz
 ```
 Model will be installed into pip and can be loaded as 'en_model0'
